@@ -1,0 +1,165 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>boot</groupId>
+  <artifactId>boot-base</artifactId>
+  <packaging>war</packaging>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>boot-base Maven Webapp</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<java.version>1.7</java.version>
+	</properties>
+	
+   <parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.4.2.RELEASE</version>
+		<relativePath/> 
+		<!-- lookup parent from repository -->
+	</parent>
+	
+<dependencies>
+	<dependency>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter</artifactId>
+	</dependency>
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-test</artifactId>
+        <scope>test</scope>
+    </dependency>
+    <!-- <dependency>
+		<groupId>org.mybatis.spring.boot</groupId>
+		<artifactId>mybatis-spring-boot-starter</artifactId>
+		<version>1.1.1</version>
+	</dependency> -->
+    <dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-data-jpa</artifactId>
+	</dependency>
+	<dependency>
+	    <groupId>mysql</groupId>
+	    <artifactId>mysql-connector-java</artifactId>
+	</dependency>
+	<!-- 排除springboot自带的tomcat -->
+	<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-web</artifactId>
+        <exclusions>
+        <exclusion>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <groupId>org.slf4j</groupId>
+        </exclusion>
+        <exclusion>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-tomcat</artifactId>
+        </exclusion>
+    </exclusions>
+    </dependency>
+    <!-- 重新引入tomcat插件包 指定只在compile和test期间使用打包时候不会打入，因为项目使用外部tomcat容器部署-->
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-tomcat</artifactId>
+	    <scope>provided</scope>
+	</dependency>
+    <!-- spring boot 热部署支持 -->
+    <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-devtools</artifactId>
+        <!-- optional=true,依赖不会传递，之后依赖myboot项目的项目如果想要使用devtools，需要重新引入 -->
+        <optional>true</optional>
+    </dependency>
+    <!-- 页面化的restful接口文档插件swagger -->
+    <dependency>
+	    <groupId>io.springfox</groupId>
+	    <artifactId>springfox-swagger2</artifactId>
+	    <version>2.2.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>io.springfox</groupId>
+	    <artifactId>springfox-swagger-ui</artifactId>
+	    <version>2.2.2</version>
+	</dependency>
+	<dependency>
+	    <groupId>org.springframework.boot</groupId>
+	    <artifactId>spring-boot-starter-redis</artifactId>
+	</dependency>
+</dependencies>
+<build>
+    	<finalName>boot-base</finalName>
+    	<plugins>  
+   		<plugin>
+		    <groupId>org.apache.maven.plugins</groupId>
+		    <artifactId>maven-war-plugin</artifactId>
+		    <configuration>
+		        <warName>boot-base</warName>
+		    </configuration>
+		</plugin>
+        <plugin>  
+            <groupId>org.springframework.boot</groupId>  
+            <artifactId>spring-boot-maven-plugin</artifactId>  
+            <dependencies>  
+                <!-- spring热部署 -->  
+                <dependency>  
+                    <groupId>org.springframework</groupId>  
+                    <artifactId>springloaded</artifactId>  
+                    <version>1.2.6.RELEASE</version>  
+                </dependency>  
+            </dependencies>  
+        </plugin>  
+    </plugins> 
+</build>
+
+	<repositories>
+		<!-- Maven Central -->
+		<repository>
+			<id>org.maven.central</id>
+			<name>Maven Central Repository</name>
+			<url>http://repo1.maven.org/maven2</url>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>
+		<!-- For testing against latest Spring snapshots -->
+		<repository>
+			<id>org.springframework.maven.snapshot</id>
+			<name>Spring Maven Snapshot Repository</name>
+			<url>http://maven.springframework.org/snapshot</url>
+			<releases><enabled>false</enabled></releases>
+			<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+		<!-- For developing against latest Spring milestones -->
+		<repository>
+			<id>org.springframework.maven.milestone</id>
+			<name>Spring Maven Milestone Repository</name>
+			<url>http://maven.springframework.org/milestone</url>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>
+		<!-- Needed for Hibernate, which is not published to central -->
+		<repository>
+			<id>org.jboss.repository</id>
+			<name>JBoss Maven Repository</name>
+			<url>http://repository.jboss.org/maven2</url>
+			<snapshots><enabled>false</enabled></snapshots>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Repository Group</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+	
+	
+	
+ 
+</project>
