@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true" scanPeriod="10 seconds">  
+
+	<springProperty  name="logFilePath" source="sys.path"/>
+
+	<appender name="file" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<encoder>
+			<pattern>
+				[ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
+			</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logFilePath}/boot-web-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>50 MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+	</appender>
+
+	<appender name="file_error" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<append>true</append>
+		<encoder>
+			<pattern>
+				[ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
+			</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${logFilePath}/boot-web-error-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>50 MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+			<!-- <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY </onMismatch> -->
+		</filter>
+	</appender>
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				[ %-5level] [%date{yyyy-MM-dd HH:mm:ss}] %logger{96} [%line] - %msg%n
+			</pattern>
+			<!--<charset>utf-8</charset>-->
+		</encoder>
+	</appender>
+	<!-- spring扩展，分环境配置log信息 -->
+	<springProfile name="dev">
+		<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+				level="TRACE" />
+		<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+				level="TRACE" />
+		<logger name="org.hibernate.SQL" level="DEBUG" />
+		<logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
+		<logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />
+
+		<logger name="org.springframework.web" level="INFO"/>
+
+		<root level="INFO">
+			<appender-ref ref="console" />
+			<appender-ref ref="file_error" />
+			<appender-ref ref="file" />
+		</root>
+	</springProfile>
+	<springProfile name="test">
+		<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+				level="TRACE" />
+		<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+				level="TRACE" />
+		<logger name="org.hibernate.SQL" level="DEBUG" />
+		<logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
+		<logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />
+
+		<logger name="org.springframework.web" level="INFO"/>
+
+		<root level="INFO">
+
+			<appender-ref ref="file_error" />
+			<appender-ref ref="file" />
+		</root>
+	</springProfile>
+	<springProfile name="prod">
+		<logger name="org.hibernate.type.descriptor.sql.BasicBinder"
+				level="TRACE" />
+		<logger name="org.hibernate.type.descriptor.sql.BasicExtractor"
+				level="TRACE" />
+		<logger name="org.hibernate.SQL" level="DEBUG" />
+		<logger name="org.hibernate.engine.QueryParameters" level="DEBUG" />
+		<logger name="org.hibernate.engine.query.HQLQueryPlan" level="DEBUG" />
+
+		<logger name="org.springframework.web" level="INFO"/>
+
+		<root level="INFO">
+
+			<appender-ref ref="file_error" />
+			<appender-ref ref="file" />
+		</root>
+	</springProfile>
+</configuration>

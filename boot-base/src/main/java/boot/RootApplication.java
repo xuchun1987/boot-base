@@ -18,10 +18,11 @@ public class RootApplication extends SpringBootServletInitializer {
 			SpringApplicationBuilder builder) {
 		return builder.sources(RootApplication.class);
 	}
-
+	
 	public static void main(String [] args) {
         SpringApplication.run(RootApplication.class, args);
     }
+
 
 	
 }
